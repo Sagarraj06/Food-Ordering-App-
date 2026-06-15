@@ -22,7 +22,7 @@ const schema: Schema<IUser> = new Schema({
         type: String,
         required: true
     },
-    role:{
+    role:{ 
         type: String,
         
         default: null

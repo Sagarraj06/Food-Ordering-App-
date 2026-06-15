@@ -15,5 +15,5 @@ if(!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET ){
 export const OAuth2Client = new google.auth.OAuth2(
     GOOGLE_CLIENT_ID,
     GOOGLE_CLIENT_SECRET,
-    "authmessage"
+    "postmessage"
 ) 
