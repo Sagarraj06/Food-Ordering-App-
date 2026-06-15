@@ -2,17 +2,29 @@ import User from '../model/user.js'
 import jwt from 'jsonwebtoken'
 import tryCatch from "../middlewares/trycatch.js";
 import { AuthenticatedRequest } from '../middlewares/isAuth.js';
+import { OAuth2Client } from '../config/googleConfig.js';
+import axios from 'axios';
 
 
 
 export const  loginUser = tryCatch(async (req,res)=>{
-    const {email,name,picture,image}= req.body;
+    const { code } = req.body;
+    if(!code){
+        return res.status(400).json({
+            message: "Authorization code is request",
+        });
+    }
+    const googleRes= await OAuth2Client.getToken(code);
+    OAuth2Client.setCredentials(googleRes.tokens);
+    const userRes= await axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${googleRes.tokens.access_token}`);
+    
+    const {email,name,picture}= userRes.data;
         let user= await User.findOne({email});
         if(!user){
             user = await User.create({
                 name,
                 email,
-                image: picture || image
+                image: picture
             })
         }
         const token = jwt.sign({user},process.env.JWT_SECRET as string,{
