@@ -20,5 +20,8 @@ export interface AppContextType{
     setUser:React.Dispatch<React.SetStateAction< User | null>>;
     setLoading:React.Dispatch<React.SetStateAction<boolean>>;
     setIsAuth:React.Dispatch<React.SetStateAction<boolean>>;
+    location: LocationData;
+    loadingLocation: boolean;
+    city:string;
     
 }
