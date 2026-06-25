@@ -1,6 +1,15 @@
 import {Request, Response, NextFunction } from 'express'
 import jwt, {JwtPayload} from 'jsonwebtoken'
-import  User,{IUser} from '../model/user.js'
+// import  User,{IUser} from '../model/user.js'
+export interface IUser {
+    _id: string;
+    name: string;
+    email: string;
+    image: string;
+    role: string;
+    restaurantId: string;
+}
+
 
 
 
@@ -36,8 +45,22 @@ Promise<void> => {
         next();
 } catch (error:any) {
         res.status(500).json({
-            message:error,
+            message:"Please Login- JWT Error"
         });
         return;
     }
 };
+
+
+
+export const isSeller = async(req:AuthenticatedRequest,res:Response,next:NextFunction):
+Promise<void> =>{
+    const user = req.user;
+    if(user && user.role !== "seller"){
+        res.status(403).json({
+            message: "Only Sellers can create restaurants",
+        });
+        return;
+    }
+    next();
+}

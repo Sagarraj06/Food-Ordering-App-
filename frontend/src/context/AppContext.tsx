@@ -65,6 +65,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                     setCity(
                         data.address.city || data.address.town || data.address.village || "current location"
                     );
+                    setLoadingLocation(false);
                 } catch (error) {
                     console.error("Error fetching address:", error);
                     setlocation({
